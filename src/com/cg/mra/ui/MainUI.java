@@ -1,5 +1,6 @@
 package com.cg.mra.ui;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 import com.cg.mra.beans.Account;
@@ -10,14 +11,15 @@ import com.cg.mra.service.AccountServiceImpl;
 
 public class MainUI {
 
-	public static void main(String[] args) throws ImproperInputException, InvalidCustomerException {
+	public static void main(String[] args) {
 
 		AccountService as = new AccountServiceImpl();
 		Account a = new Account();
 		int bal;
 		Scanner sc = new Scanner(System.in);
 		do {
-			System.out.println("Menu:"+"\n"+"1. Account Balance Enquiry"+"\n"+"2. Recharge Account"+"\n"+"3. Exit");
+			System.out.println(
+					"Menu:" + "\n" + "1. Account Balance Enquiry" + "\n" + "2. Recharge Account" + "\n" + "3. Exit");
 			int menu = sc.nextInt();
 			switch (menu) {
 			case 1:
@@ -28,10 +30,16 @@ public class MainUI {
 					if (a != null) {
 						System.out.println("Your Current Balance is " + a.getAccountBalance());
 					} else {
-						throw new InvalidCustomerException();
+						try {
+							throw new InvalidCustomerException();
+						} catch (InvalidCustomerException e) {
+						}
 					}
 				} else {
-					throw new ImproperInputException();
+					try {
+						throw new ImproperInputException();
+					} catch (ImproperInputException e) {
+					}
 				}
 				break;
 
@@ -44,14 +52,23 @@ public class MainUI {
 						System.out.println("Enter recharge amount");
 						double amt = sc.nextDouble();
 						bal = as.rechargeAccount(mobile, amt);
-						System.out.println("Your Account Recharge Successful");
-						System.out.println("Hello " + a.getCustomerName()+", Available Balance is " + bal);
+						if (bal != -1) {
+							System.out.println("Your Account Recharge Successful");
+							System.out.println("Hello " + a.getCustomerName() + ", Available Balance is " + bal);
+						} else
+							System.err.println("Invalid recharge amount");
 					} else {
 						System.err.println("Cannot Recharge");
-						throw new InvalidCustomerException();
+						try {
+							throw new InvalidCustomerException();
+						} catch (InvalidCustomerException e) {
+						}
 					}
 				} else {
-					throw new ImproperInputException();
+					try {
+						throw new ImproperInputException();
+					} catch (ImproperInputException e) {
+					}
 				}
 				break;
 

@@ -1,5 +1,7 @@
 package com.cg.mra.service;
 
+import java.sql.SQLException;
+
 import com.cg.mra.beans.Account;
 
 public interface AccountService {
